@@ -3,7 +3,7 @@
 <template>
   <div>
     <div>
-      <h1 class="text-center">Login</h1>
+      <h1 class="text-center green">Login</h1>
       <h3 class="text-center text-muted lead pt-3">Inicie sesión en su cuenta</h3>
     </div>
     <form>
@@ -27,4 +27,12 @@
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+.green {
+  color: rgb(21, 133, 21);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  text-shadow: 1px 1px rgb(0, 0, 0);
+}
+</style>

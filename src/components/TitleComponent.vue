@@ -11,12 +11,6 @@ defineProps({
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
     <h3>Inicie sesión en su cuenta</h3>
-    <div>
-      <label for="">Usuario</label>
-      <input type="text" />
-      <label for="">Contraseña</label>
-      <input type="text" />
-    </div>
   </div>
 </template>
 

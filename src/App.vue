@@ -4,39 +4,32 @@ import TitleComponent from './components/TitleComponent.vue'
 </script>
 
 <template>
-  <div>
-    <img alt="Vue logo" class="logo" src="@/images/logo-CIDE.png" />
-
-    <div class="wrapper">
-      <TitleComponent msg="Login" />
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row border rounded-5 p-3 bg-red shadow box-area">
+      <div
+        class="col-md-6 rounded-5 d-flex justify-content-center align-items-center flex-column left-box"
+        style="background: greenyellow"
+      >
+        <div class="featured-image">
+          <img src="@/images/logo-CIDE.png" alt="Cide Image" />
+        </div>
+      </div>
+      <div class="col-md-6 right-box">
+        <div class="row align-items-center">
+          <div class="header-text mb-4">
+            <div class="wrapper">
+              <TitleComponent msg="Login" />
+              <RouterView></RouterView>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.box-area {
+  width: 930px;
 }
 </style>

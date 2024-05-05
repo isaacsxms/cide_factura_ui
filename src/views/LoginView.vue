@@ -41,6 +41,7 @@
 
 <script>
 import { ref, watch, reactive, computed } from 'vue'
+import axios from 'axios'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 /*
@@ -62,11 +63,19 @@ export default {
 
     const v$ = useVuelidate(rules, state)
 
-    const submitForm = () => {
+    const submitForm = async () => {
       try {
         v$.value.$validate()
         if (!v$.value.$error) {
-          alert('Form succesfully submitted!')
+          const response = await axios.post('http://localhost:3000/login', {
+            username: state.username,
+            password: state.password
+          })
+          if (response.status === 200) {
+            console.log('Succesful login')
+          } else {
+            console.log('Login failed:', response.data) // log doesn't appear for some reason
+          }
         } else {
           console.error('Error on input inserted...')
         }

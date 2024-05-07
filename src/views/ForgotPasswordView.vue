@@ -55,9 +55,10 @@
 </template>
 
 <script>
-import { ref, watch, reactive } from 'vue'
+import { ref, watch, reactive, VueElement, computed } from 'vue'
 import useVuelidate from '@vuelidate/core'
-import { required, helpers } from '@vuelidate/validators'
+import { required, helpers, minLength, sameAs } from '@vuelidate/validators'
+import axios from 'axios'
 
 /*
 For username and password on login, it'll only need to check if the
@@ -77,19 +78,33 @@ export default {
       username: { required },
       identityDocument: {
         required,
-        regex: helpers.regex(/^((\d{8}[A-Z])|([XYZ]\d{7}[A-Z]))$/i)
+        regex: helpers.regex(/^((\d{8}[A-Z])|([XYZ]\d{7}[A-Z]))$/i) // regex for dni - nie
       },
-      newPassword: { required },
-      confirmPassword: { required }
+      newPassword: { required, minLength: minLength(6) },
+      confirmPassword: { required, sameAsPassword: sameAs(computed(() => state.newPassword)) }
     }
 
     const v$ = useVuelidate(rules, state)
 
     const submitForm = () => {
+      if (state.newPassword == state.confirmPassword) {
+        console.log('Hey!')
+      }
       try {
         v$.value.$validate()
         if (!v$.value.$error) {
-          alert('Form succesfully submitted!')
+          const response = axios.put('http://localhost:3000/changepassword', {
+            username: state.username,
+            identityDocument: state.identityDocument,
+            newPassword: state.newPassword
+          })
+          if (response == 200) {
+            alert('Form succesfully submitted!')
+          } else if (response == 401) {
+            console.log('User not found')
+          } else {
+            console.log('Internal error')
+          }
         } else {
           console.error('Error on input inserted...')
         }

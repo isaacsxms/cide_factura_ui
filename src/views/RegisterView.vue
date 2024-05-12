@@ -1,0 +1,319 @@
+<template>
+  <div class="w-100">
+    <div>
+      <h1 class="text-center green">Register</h1>
+      <p class="text-center pt-3 mb-4 fw-bold info-text">Inicie sesión en su cuenta</p>
+    </div>
+    <div class="row mb-4">
+      <div class="col-md-4 mb-2">
+        <div class="form-group mb-3">
+          <input
+            type="text"
+            class="form-control rounded-3 form-style"
+            :class="{ 'border-danger': v$?.username?.$error }"
+            id="username"
+            v-model="state.username"
+            placeholder="Nombre de usuario"
+          />
+        </div>
+        <!-- Add other fields here -->
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.name?.$error }"
+          id="name"
+          v-model="state.name"
+          placeholder="Nombre"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.surname?.$error }"
+          id="surname"
+          v-model="state.surname"
+          placeholder="Apellido"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.second_surname?.$error }"
+          id="second_surname"
+          v-model="state.second_surname"
+          placeholder="Segundo apellido"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.address?.$error }"
+          id="address"
+          v-model="state.address"
+          placeholder="Dirección"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.date_of_birth?.$error }"
+          id="date_of_birth"
+          v-model="state.date_of_birth"
+          placeholder="Fecha de nacimiento"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.identity?.$error }"
+          id="identity"
+          v-model="state.identity"
+          placeholder="Número de identidad (DNI o NIE)"
+        />
+      </div>
+      <div class="col-md-4">
+        <!-- add v-if = " user must be under 18 "-->
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.tutor_name?.$error }"
+          id="tutor_name"
+          v-model="state.tutor_name"
+          placeholder="Tutor legal: Nombre"
+        />
+      </div>
+      <div class="col-md-4">
+        <!-- add v-if = " user must be under 18 "-->
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.tutor_identity?.$error }"
+          id="tutor_identity"
+          v-model="state.tutor_identity"
+          placeholder="Tutor legal: DNI o NIE"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.telephone?.$error }"
+          id="telephone"
+          v-model="state.telephone"
+          placeholder="Teléfono"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.email?.$error }"
+          id="email"
+          v-model="state.email"
+          placeholder="E-mail"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          :type="updatePasswordVisibility"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.password?.$error }"
+          id="password"
+          v-model="state.password"
+          placeholder="Contraseña"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          :type="updatePasswordVisibility"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.confirm_password?.$error }"
+          id="confirm_password"
+          v-model="state.confirm_password"
+          placeholder="Confirmar contraseña"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.iban?.$error }"
+          id="iban"
+          v-model="state.iban"
+          placeholder="IBAN"
+        />
+      </div>
+      <div class="col-md-4">
+        <input
+          type="text"
+          class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.enrolling_in?.$error }"
+          id="enrolling_in"
+          v-model="state.enrolling_in"
+          placeholder="Curso academico"
+        />
+      </div>
+    </div>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="w-50 btn btn-success ml-auto mr-auto mb-2" @click="submitForm">
+        Register
+      </button>
+    </div>
+    <div class="d-flex justify-content-center">
+      <router-link to="/"><button class="btn mb-3 button-register">Login</button></router-link>
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref, watch, reactive, computed } from 'vue'
+import axios from 'axios'
+import useVuelidate from '@vuelidate/core'
+import { required, sameAs } from '@vuelidate/validators'
+/*
+  For username and password on login, it'll only need to check if the
+  input exists in DB, can also check for other things, but thats the only
+  thing really needed, and that it's not empty, meaning required
+  */
+export default {
+  setup() {
+    const state = reactive({
+      username: '',
+      password: '',
+      confirm_password: '',
+      name: '',
+      surname: '',
+      second_surname: '',
+      address: '',
+      date_of_birth: '',
+      identity: '',
+      tutor_name: '',
+      tutor_identity: '',
+      telephone: '',
+      email: '',
+      iban: '',
+      enrolling_in: ''
+    })
+
+    // TO-DO: Finish adding rules to fields
+    const rules = {
+      username: { required },
+      password: { required },
+      confirm_password: { required, sameAsPassword: sameAs(computed(() => state.password) ) },
+      name: { required },
+      surname: { required },
+      second_surname: '',
+      address: { required },
+      date_of_birth: { required },
+      identity: { required },
+      tutor_name: '',
+      tutor_identity: '',
+      telephone: { required },
+      email: { required },
+      iban: { required },
+      enrolling_in: { required }
+    }
+
+    const v$ = useVuelidate(rules, state)
+
+    const submitForm = async () => {
+      try {
+        v$.value.$validate()
+        if (!v$.value.$error) {
+          const response = await axios.post('http://localhost:3000/register', {
+            username: state.username,
+            password: state.password,
+            name: state.name,
+            surname: state.surname,
+            second_surname: state.second_surname,
+            address: state.address,
+            date_of_birth: state.date_of_birth,
+            identity: state.identity,
+            tutor: {
+              name: state.tutor_name,
+              identity: state.tutor_identity
+            },
+            telephone: state.telephone,
+            email: state.email,
+            iban: state.iban,
+            enrolling_in: state.enrolling_in
+          })
+          if (response.status === 201) {
+            console.log('User registered successfully')          
+          } else {
+            console.log('Register failed:', response.data) // log doesn't appear for some reason
+          }
+        } else {
+          console.error('Error on input inserted...')
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    const showPassword = ref(false)
+
+    const togglePasswordVisibility = () => {
+      showPassword.value = !showPassword.value
+    }
+
+    const updatePasswordVisibility = computed(() => {
+      return showPassword.value ? 'text' : 'password'
+    })
+
+    const passwordVisibilityIcon = computed(() => {
+      return showPassword.value ? 'fa-eye-slash' : 'fa-eye'
+    })
+
+    return {
+      state,
+      submitForm,
+      v$,
+      showPassword,
+      togglePasswordVisibility,
+      updatePasswordVisibility,
+      passwordVisibilityIcon
+    }
+  }
+}
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+.green {
+  color: rgb(21, 133, 21);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  text-shadow: 1px 1px rgb(0, 0, 0);
+}
+
+.form-style {
+  background: rgba(215, 255, 205, 0.575);
+}
+
+.info-text {
+  font-weight: 100;
+  font-size: 14px;
+}
+
+.button-register {
+  background: rgba(128, 128, 128, 0.274);
+}
+
+a {
+  color: rgb(21, 133, 21);
+  text-decoration: none;
+}
+
+</style>

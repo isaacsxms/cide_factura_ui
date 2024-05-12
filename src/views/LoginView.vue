@@ -31,7 +31,9 @@
       <button type="submit" class="btn btn-success ml-auto mr-auto mb-2" @click="submitForm">
         Login
       </button>
-      <button type="submit" class="btn mb-3 button-register">Register</button>
+      <router-link to="register"
+        ><button class="btn mb-3 button-register">Register</button></router-link
+      >
       <router-link class="forgot-password" to="forgotpassword"
         >¿Has perdido tu contraseña?</router-link
       >

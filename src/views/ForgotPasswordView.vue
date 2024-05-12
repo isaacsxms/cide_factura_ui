@@ -86,22 +86,24 @@ export default {
 
     const v$ = useVuelidate(rules, state)
 
-    const submitForm = () => {
+    const submitForm = async () => {
       if (state.newPassword == state.confirmPassword) {
         console.log('Hey!')
       }
       try {
         v$.value.$validate()
         if (!v$.value.$error) {
-          const response = axios.put('http://localhost:3000/changepassword', {
+          const response = await axios.put('http://localhost:3000/changepassword', {
             username: state.username,
             identityDocument: state.identityDocument,
             newPassword: state.newPassword
           })
-          if (response == 200) {
+
+          console.log("Response: ", response)
+          if (response.status == 200) {
             alert('Form succesfully submitted!')
-          } else if (response == 401) {
-            console.log('User not found')
+          } else if (response.status == 401) {
+            alert('User not found!')
           } else {
             console.log('Internal error')
           }

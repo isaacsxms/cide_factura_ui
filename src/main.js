@@ -10,9 +10,9 @@ const app = createApp(App)
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faArrowRightFromBracket, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightFromBracket, faEye, faEyeSlash, faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faArrowRightFromBracket, faEye, faEyeSlash)
+library.add(faArrowRightFromBracket, faEye, faEyeSlash, faUser, faCartShopping)
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(createPinia())

@@ -1,5 +1,64 @@
 <template>
-    <div>
-        <p>Hello</p>
+    <font-awesome-icon class="mb-3" icon="fa fa-user" size="2xl" />
+    <div class="d-flex flex-column justify-content-center">
+      <h1 class="text-center green"> Admin </h1>
+      <p class="text-center">Bienvenido Admin
+        ¿Que desea hacer?</p>
+    </div>
+
+    <div class="container w-100 row">
+      <div class="col-6 mt-4 mb-4">
+        <button type="submit" class="w-100 btn btn-success">
+            Consulta Usuario
+        </button>
+      </div>
+      <div class="col-6 mt-4 mb-4">
+        <button type="submit" class="w-100 btn btn-success">
+            Validar Peticiones
+        </button>
+      </div>
     </div>
 </template>
+
+<!-- 50 -->
+<!-- w-25-->
+<!-- w-25-->
+
+<script>
+import { ref, onMounted } from 'vue'
+import axiosInstance from '@/axios'
+import { useRoute } from 'vue-router'
+
+export default {
+  setup() {
+    // Define a reactive property to hold the username
+    const route = useRoute()
+
+    onMounted(async () => {
+      try {
+        const userId = route.params.id
+        console.log("userId here: ", userId)
+        const response = await axiosInstance.get(`/user/profile/${userId}`)
+        if (response.status === 200) {
+            console.log("Admin menu acquired!")
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error)
+      }
+    })
+
+    return {
+     
+    }
+  }
+}
+</script>
+
+<style scoped>
+.green {
+  color: rgb(21, 133, 21);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  text-shadow: 1px 1px rgb(0, 0, 0);
+}
+</style>

@@ -174,9 +174,11 @@
 
 <script>
 import { ref, watch, reactive, computed } from 'vue'
-import axios from 'axios'
+import axiosInstance from '@/axios'
 import useVuelidate from '@vuelidate/core'
 import { required, sameAs } from '@vuelidate/validators'
+import { useRouter } from 'vue-router'
+
 /*
   For username and password on login, it'll only need to check if the
   input exists in DB, can also check for other things, but thats the only
@@ -221,13 +223,14 @@ export default {
       enrolling_in: { required }
     }
 
+    const router = useRouter()
     const v$ = useVuelidate(rules, state)
 
     const submitForm = async () => {
       try {
         v$.value.$validate()
         if (!v$.value.$error) {
-          const response = await axios.post('http://localhost:3000/register', {
+          const response = await axiosInstance.post('/register', {
             username: state.username,
             password: state.password,
             name: state.name,
@@ -246,7 +249,8 @@ export default {
             enrolling_in: state.enrolling_in
           })
           if (response.status === 201) {
-            console.log('User registered successfully')          
+            console.log('User registered successfully')
+            router.push('/')     
           } else {
             console.log('Register failed:', response.data) // log doesn't appear for some reason
           }

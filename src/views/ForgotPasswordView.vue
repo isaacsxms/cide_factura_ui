@@ -58,7 +58,8 @@
 import { ref, watch, reactive, VueElement, computed } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { required, helpers, minLength, sameAs } from '@vuelidate/validators'
-import axios from 'axios'
+import axiosInstance from '@/axios'
+import { useRouter } from 'vue-router'
 
 /*
 For username and password on login, it'll only need to check if the
@@ -84,6 +85,7 @@ export default {
       confirmPassword: { required, sameAsPassword: sameAs(computed(() => state.newPassword)) }
     }
 
+    const router = useRouter()
     const v$ = useVuelidate(rules, state)
 
     const submitForm = async () => {
@@ -93,7 +95,7 @@ export default {
       try {
         v$.value.$validate()
         if (!v$.value.$error) {
-          const response = await axios.put('http://localhost:3000/changepassword', {
+          const response = await axiosInstance.put('/changepassword', {
             username: state.username,
             identityDocument: state.identityDocument,
             newPassword: state.newPassword
@@ -101,7 +103,8 @@ export default {
 
           console.log("Response: ", response)
           if (response.status == 200) {
-            alert('Form succesfully submitted!')
+            console.log('Succesfully changed password!')
+            router.push('/')
           } else if (response.status == 401) {
             alert('User not found!')
           } else {

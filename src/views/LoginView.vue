@@ -43,9 +43,9 @@
 
 <script>
 import { ref, watch, reactive, computed } from 'vue'
-import axios from 'axios'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
+import axiosInstance from '@/axios'
 /*
 For username and password on login, it'll only need to check if the
 input exists in DB, can also check for other things, but thats the only
@@ -69,7 +69,7 @@ export default {
       try {
         v$.value.$validate()
         if (!v$.value.$error) {
-          const response = await axios.post('http://localhost:3000/login', {
+          const response = await axiosInstance.post('/login', {
             username: state.username,
             password: state.password
           })

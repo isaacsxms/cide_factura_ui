@@ -18,6 +18,16 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: () => import('../views/RegisterView.vue')
+    },
+    {
+      path: '/user/:id',
+      name: 'usermenu',
+      component: () => import('../views/UserMenu.vue')
+    },
+    {
+      path: '/admin',
+      name: 'adminmenu',
+      component: () => import('../views/AdminMenu.vue')
     }
   ]
 })

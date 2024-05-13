@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { ref, watch, reactive, VueElement, computed } from 'vue'
+import { reactive, computed } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { required, helpers, minLength, sameAs } from '@vuelidate/validators'
 import axiosInstance from '@/axios'

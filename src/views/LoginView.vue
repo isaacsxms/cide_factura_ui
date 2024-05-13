@@ -42,10 +42,12 @@
 </template>
 
 <script>
-import { ref, watch, reactive, computed } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import axiosInstance from '@/axios'
+import { routerKey, useRouter } from 'vue-router'
+
 /*
 For username and password on login, it'll only need to check if the
 input exists in DB, can also check for other things, but thats the only
@@ -62,7 +64,8 @@ export default {
       username: { required },
       password: { required }
     }
-
+    
+    const router = useRouter()
     const v$ = useVuelidate(rules, state)
 
     const submitForm = async () => {
@@ -75,6 +78,10 @@ export default {
           })
           if (response.status === 200) {
             console.log('Succesful login')
+            
+            const userId = response.data.userId
+            router.push(`/user/${userId}`)
+            
           } else {
             console.log('Login failed:', response.data) // log doesn't appear for some reason
           }

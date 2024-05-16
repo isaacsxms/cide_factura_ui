@@ -35,16 +35,7 @@ export default {
     const route = useRoute()
 
     onMounted(async () => {
-      try {
-        const userId = route.params.id
-        console.log("userId here: ", userId)
-        const response = await axiosInstance.get(`/user/profile/${userId}`)
-        if (response.status === 200) {
-            console.log("Admin menu acquired!")
-        }
-      } catch (error) {
-        console.error('Error fetching user profile:', error)
-      }
+      
     })
 
     return {

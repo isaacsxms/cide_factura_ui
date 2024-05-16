@@ -77,11 +77,14 @@ export default {
             password: state.password
           })
           if (response.status === 200) {
-            console.log('Succesful login')
-            
-            const userId = response.data.userId
-            router.push(`/user/${userId}`)
-            
+            console.log('Succesful login', response.data)
+            const rol = response.data.rol;
+            if (rol === "admin") {
+              router.push(`/admin`)
+            } else if (rol === "user"){
+              const userId = response.data.userId
+              router.push(`/user/${userId}`)
+            }
           } else {
             console.log('Login failed:', response.data) // log doesn't appear for some reason
           }

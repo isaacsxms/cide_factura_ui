@@ -101,7 +101,7 @@ export default {
             newPassword: state.newPassword
           })
 
-          console.log("Response: ", response)
+          console.log('Response: ', response)
           if (response.status == 200) {
             console.log('Succesfully changed password!')
             router.push('/')

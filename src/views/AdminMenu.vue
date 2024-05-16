@@ -1,23 +1,18 @@
 <template>
-    <font-awesome-icon class="mb-3" icon="fa fa-user" size="2xl" />
-    <div class="d-flex flex-column justify-content-center">
-      <h1 class="text-center green"> Admin </h1>
-      <p class="text-center">Bienvenido Admin
-        ¿Que desea hacer?</p>
-    </div>
+  <font-awesome-icon class="mb-3" icon="fa fa-user" size="2xl" />
+  <div class="d-flex flex-column justify-content-center">
+    <h1 class="text-center green">Admin</h1>
+    <p class="text-center">Bienvenido Admin ¿Que desea hacer?</p>
+  </div>
 
-    <div class="container w-100 row">
-      <div class="col-6 mt-4 mb-4">
-        <button type="submit" class="w-100 btn btn-success">
-            Consulta Usuario
-        </button>
-      </div>
-      <div class="col-6 mt-4 mb-4">
-        <button type="submit" class="w-100 btn btn-success">
-            Validar Peticiones
-        </button>
-      </div>
+  <div class="container w-100 row">
+    <div class="col-6 mt-4 mb-4">
+      <button type="submit" class="w-100 btn btn-success">Consulta Usuario</button>
     </div>
+    <div class="col-6 mt-4 mb-4">
+      <button type="submit" class="w-100 btn btn-success">Validar Peticiones</button>
+    </div>
+  </div>
 </template>
 
 <!-- 50 -->
@@ -34,13 +29,9 @@ export default {
     // Define a reactive property to hold the username
     const route = useRoute()
 
-    onMounted(async () => {
-      
-    })
+    onMounted(async () => {})
 
-    return {
-     
-    }
+    return {}
   }
 }
 </script>

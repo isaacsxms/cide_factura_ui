@@ -64,7 +64,7 @@ export default {
       username: { required },
       password: { required }
     }
-    
+
     const router = useRouter()
     const v$ = useVuelidate(rules, state)
 
@@ -78,10 +78,10 @@ export default {
           })
           if (response.status === 200) {
             console.log('Succesful login', response.data)
-            const rol = response.data.rol;
-            if (rol === "admin") {
+            const rol = response.data.rol
+            if (rol === 'admin') {
               router.push(`/admin`)
-            } else if (rol === "user"){
+            } else if (rol === 'user') {
               const userId = response.data.userId
               router.push(`/user/${userId}`)
             }

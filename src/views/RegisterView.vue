@@ -208,7 +208,7 @@ export default {
     const rules = {
       username: { required },
       password: { required },
-      confirm_password: { required, sameAsPassword: sameAs(computed(() => state.password) ) },
+      confirm_password: { required, sameAsPassword: sameAs(computed(() => state.password)) },
       name: { required },
       surname: { required },
       second_surname: '',
@@ -250,7 +250,7 @@ export default {
           })
           if (response.status === 201) {
             console.log('User registered successfully')
-            router.push('/')     
+            router.push('/')
           } else {
             console.log('Register failed:', response.data) // log doesn't appear for some reason
           }
@@ -319,5 +319,4 @@ a {
   color: rgb(21, 133, 21);
   text-decoration: none;
 }
-
 </style>

@@ -13,7 +13,9 @@
       <button type="submit" class="w-100 btn btn-success">Tienda</button>
     </div>
     <div class="col-6 mt-4 mb-4">
+      <!--<router-link :to="{ name: 'profile', params: { userId: userId } }">-->
       <button type="submit" class="w-100 btn btn-success">Perfil</button>
+    <!--</router-link>-->
     </div>
     <div class="col-6 mb-2">
       <button type="submit" class="w-100 btn btn-success">
@@ -41,10 +43,10 @@ export default {
     const username = ref('User Menu Page')
     const name = ref('First name')
     const route = useRoute()
-
+    let userId;
     onMounted(async () => {
       try {
-        const userId = route.params.id
+        userId = route.params.id
         console.log('userId here: ', userId)
         const response = await axiosInstance.get(`/user/profile/${userId}`)
         if (response.status === 200) {
@@ -60,7 +62,8 @@ export default {
 
     return {
       username,
-      name
+      name,
+      userId
     }
   }
 }

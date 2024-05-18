@@ -1,4 +1,5 @@
 <template>
+  <GoHome />
   <font-awesome-icon class="mb-3" icon="fa fa-user" size="2xl" />
   <div class="d-flex flex-column justify-content-center">
     <h1 class="text-center green">Admin</h1>
@@ -23,13 +24,17 @@
 import { ref, onMounted } from 'vue'
 import axiosInstance from '@/axios'
 import { useRoute } from 'vue-router'
+import GoHome from '@/components/GoHomeRoute.vue'
 
 export default {
+  components: {
+    GoHome
+  },
   setup() {
     // Define a reactive property to hold the username
     const route = useRoute()
 
-    onMounted(async () => {})
+    onMounted(async () => { })
 
     return {}
   }
@@ -42,5 +47,9 @@ export default {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   text-shadow: 1px 1px rgb(0, 0, 0);
+}
+
+.btn {
+  top: 30%;
 }
 </style>

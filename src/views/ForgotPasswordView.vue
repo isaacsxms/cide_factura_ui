@@ -1,8 +1,5 @@
 <template>
   <div class="w-50">
-    <router-link to="/"
-      ><font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket"
-    /></router-link>
     <div>
       <h1 class="text-center green">Reestablecer contraseña</h1>
       <p class="text-center pt-3 mb-4 fw-bold info-text">
@@ -10,47 +7,28 @@
       </p>
     </div>
     <div class="d-flex flex-column form-group mb-3">
-      <input
-        type="text"
-        class="form-control rounded-3 mb-3 form-style"
-        :class="{ 'border-danger': v$?.username?.$error }"
-        id="username"
-        v-model="state.username"
-        placeholder="Nombre de usuario"
-      />
+      <input type="text" class="form-control rounded-3 mb-3 form-style"
+        :class="{ 'border-danger': v$?.username?.$error }" id="username" v-model="state.username"
+        placeholder="Nombre de usuario" />
 
-      <input
-        type="text"
-        class="form-control rounded-3 mb-3 form-style"
-        :class="{ 'border-danger': v$?.identityDocument?.$error }"
-        id="identityDocument"
-        v-model="state.identityDocument"
-        placeholder="DNI/NIE"
-      />
+      <input type="text" class="form-control rounded-3 mb-3 form-style"
+        :class="{ 'border-danger': v$?.identityDocument?.$error }" id="identityDocument"
+        v-model="state.identityDocument" placeholder="DNI/NIE" />
 
-      <input
-        type="text"
-        class="form-control rounded-3 mb-3 form-style"
-        :class="{ 'border-danger': v$?.newPassword?.$error }"
-        id="newPassword"
-        v-model="state.newPassword"
-        placeholder="Nueva Contraseña"
-      />
+      <input type="text" class="form-control rounded-3 mb-3 form-style"
+        :class="{ 'border-danger': v$?.newPassword?.$error }" id="newPassword" v-model="state.newPassword"
+        placeholder="Nueva Contraseña" />
 
-      <input
-        type="text"
-        class="form-control rounded-3 mb-2 form-style"
-        :class="{ 'border-danger': v$?.confirmPassword?.$error }"
-        id="confirmPassword"
-        v-model="state.confirmPassword"
-        placeholder="Confirme contraseña"
-      />
+      <input type="text" class="form-control rounded-3 mb-2 form-style"
+        :class="{ 'border-danger': v$?.confirmPassword?.$error }" id="confirmPassword" v-model="state.confirmPassword"
+        placeholder="Confirme contraseña" />
     </div>
     <div class="d-flex flex-column text-center">
       <button type="submit" class="btn btn-success ml-auto mr-auto mb-2" @click="submitForm">
         Reestablecer
       </button>
     </div>
+    <GoBack />
   </div>
 </template>
 
@@ -60,13 +38,16 @@ import useVuelidate from '@vuelidate/core'
 import { required, helpers, minLength, sameAs } from '@vuelidate/validators'
 import axiosInstance from '@/axios'
 import { useRouter } from 'vue-router'
-
+import GoBack from '@/components/GoBackRoute.vue'
 /*
 For username and password on login, it'll only need to check if the
 input exists in DB, can also check for other things, but thats the only
 thing really needed, and that it's not empty, meaning required
 */
 export default {
+  components: {
+    GoBack
+  },
   setup() {
     const state = reactive({
       username: '',
@@ -129,6 +110,7 @@ export default {
 * {
   font-family: 'Montserrat', sans-serif;
 }
+
 .green {
   color: rgb(21, 133, 21);
   font-family: 'Montserrat', sans-serif;

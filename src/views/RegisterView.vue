@@ -6,162 +6,77 @@
     </div>
     <div class="row mb-4">
       <div class="col-md-4 mb-2">
-        <div class="form-group mb-3">
-          <input
-            type="text"
-            class="form-control rounded-3 form-style"
-            :class="{ 'border-danger': v$?.username?.$error }"
-            id="username"
-            v-model="state.username"
-            placeholder="Nombre de usuario"
-          />
-        </div>
+        <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.username?.$error }"
+          id="username" v-model="state.username" placeholder="Nombre de usuario" />
         <!-- Add other fields here -->
       </div>
-      <div class="col-md-4">
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.name?.$error }"
-          id="name"
-          v-model="state.name"
-          placeholder="Nombre"
-        />
+      <div class="col-md-4 mb-2">
+        <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.name?.$error }"
+          id="name" v-model="state.name" placeholder="Nombre" />
       </div>
-      <div class="col-md-4">
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.surname?.$error }"
-          id="surname"
-          v-model="state.surname"
-          placeholder="Apellido"
-        />
+      <div class="col-md-4 mb-2">
+        <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.surname?.$error }"
+          id="surname" v-model="state.surname" placeholder="Apellido" />
       </div>
-      <div class="col-md-4">
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.second_surname?.$error }"
-          id="second_surname"
-          v-model="state.second_surname"
-          placeholder="Segundo apellido"
-        />
+      <div class="col-md-4 mb-2">
+        <input type="text" class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.second_surname?.$error }" id="second_surname" v-model="state.second_surname"
+          placeholder="Segundo apellido" />
       </div>
-      <div class="col-md-4">
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.address?.$error }"
-          id="address"
-          v-model="state.address"
-          placeholder="Dirección"
-        />
+      <div class="col-md-4 mb-2">
+        <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.address?.$error }"
+          id="address" v-model="state.address" placeholder="Dirección" />
       </div>
-      <div class="col-md-4">
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.date_of_birth?.$error }"
-          id="date_of_birth"
-          v-model="state.date_of_birth"
-          placeholder="Fecha de nacimiento"
-        />
+      <div class="col-md-4 mb-2">
+        <input type="text" class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.date_of_birth?.$error }" id="date_of_birth" v-model="state.date_of_birth"
+          placeholder="Fecha de nacimiento" />
       </div>
-      <div class="col-md-4">
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.identity?.$error }"
-          id="identity"
-          v-model="state.identity"
-          placeholder="Número de identidad (DNI o NIE)"
-        />
+      <div class="col-md-4 mb-2">
+        <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.identity?.$error }"
+          id="identity" v-model="state.identity" placeholder="Número de identidad (DNI o NIE)" />
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 mb-2">
         <!-- add v-if = " user must be under 18 "-->
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.tutor_name?.$error }"
-          id="tutor_name"
-          v-model="state.tutor_name"
-          placeholder="Tutor legal: Nombre"
-        />
+        <input type="text" class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.tutor_name?.$error }" id="tutor_name" v-model="state.tutor_name"
+          placeholder="Tutor legal: Nombre" />
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 mb-2">
         <!-- add v-if = " user must be under 18 "-->
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.tutor_identity?.$error }"
-          id="tutor_identity"
-          v-model="state.tutor_identity"
-          placeholder="Tutor legal: DNI o NIE"
-        />
+        <input type="text" class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.tutor_identity?.$error }" id="tutor_identity" v-model="state.tutor_identity"
+          placeholder="Tutor legal: DNI o NIE" />
       </div>
-      <div class="col-md-4">
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.telephone?.$error }"
-          id="telephone"
-          v-model="state.telephone"
-          placeholder="Teléfono"
-        />
+      <div class="col-md-4 mb-2">
+        <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.telephone?.$error }"
+          id="telephone" v-model="state.telephone" placeholder="Teléfono" />
       </div>
-      <div class="col-md-4">
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.email?.$error }"
-          id="email"
-          v-model="state.email"
-          placeholder="E-mail"
-        />
+      <div class="col-md-4 mb-2">
+        <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.email?.$error }"
+          id="email" v-model="state.email" placeholder="E-mail" />
       </div>
-      <div class="col-md-4">
-        <input
-          :type="updatePasswordVisibility"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.password?.$error }"
-          id="password"
-          v-model="state.password"
-          placeholder="Contraseña"
-        />
+      <div class="col-md-4 mb-2">
+        <input :type="updatePasswordVisibility" class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.password?.$error }" id="password" v-model="state.password"
+          placeholder="Contraseña" />
       </div>
-      <div class="col-md-4">
-        <input
-          :type="updatePasswordVisibility"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.confirm_password?.$error }"
-          id="confirm_password"
-          v-model="state.confirm_password"
-          placeholder="Confirmar contraseña"
-        />
+      <div class="col-md-4 mb-2">
+        <input :type="updatePasswordVisibility" class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.confirm_password?.$error }" id="confirm_password"
+          v-model="state.confirm_password" placeholder="Confirmar contraseña" />
       </div>
-      <div class="col-md-4">
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.iban?.$error }"
-          id="iban"
-          v-model="state.iban"
-          placeholder="IBAN"
-        />
+      <div class="col-md-4 mb-2">
+        <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.iban?.$error }"
+          id="iban" v-model="state.iban" placeholder="IBAN" />
       </div>
-      <div class="col-md-4">
-        <input
-          type="text"
-          class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.enrolling_in?.$error }"
-          id="enrolling_in"
-          v-model="state.enrolling_in"
-          placeholder="Curso academico"
-        />
+      <div class="col-md-4 mb-2">
+        <input type="text" class="form-control rounded-3 form-style"
+          :class="{ 'border-danger': v$?.enrolling_in?.$error }" id="enrolling_in" v-model="state.enrolling_in"
+          placeholder="Curso academico" />
       </div>
     </div>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center mt-2">
       <button type="submit" class="w-50 btn btn-success ml-auto mr-auto mb-2" @click="submitForm">
         Register
       </button>
@@ -169,6 +84,7 @@
     <div class="d-flex justify-content-center">
       <router-link to="/"><button class="btn mb-3 button-register">Login</button></router-link>
     </div>
+    <GoBack />
   </div>
 </template>
 
@@ -178,13 +94,16 @@ import axiosInstance from '@/axios'
 import useVuelidate from '@vuelidate/core'
 import { required, sameAs } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
-
+import GoBack from '@/components/GoBackRoute.vue'
 /*
   For username and password on login, it'll only need to check if the
   input exists in DB, can also check for other things, but thats the only
   thing really needed, and that it's not empty, meaning required
   */
 export default {
+  components: {
+    GoBack
+  },
   setup() {
     const state = reactive({
       username: '',
@@ -295,6 +214,7 @@ export default {
 * {
   font-family: 'Montserrat', sans-serif;
 }
+
 .green {
   color: rgb(21, 133, 21);
   font-family: 'Montserrat', sans-serif;

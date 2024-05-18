@@ -81,9 +81,6 @@
         Register
       </button>
     </div>
-    <div class="d-flex justify-content-center">
-      <router-link to="/"><button class="btn mb-3 button-register">Login</button></router-link>
-    </div>
     <GoBack />
   </div>
 </template>

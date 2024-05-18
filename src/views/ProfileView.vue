@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column justify-content-center">
-    <h1 class="text-center green">Perfil</h1>
+    <TitleComponent>Perfil</TitleComponent>
 
     <div class="mt-5">
       <div class="container d-flex justify-content-center align-items-center">
@@ -32,10 +32,12 @@ import { ref, onMounted, computed } from 'vue'
 import axiosInstance from '@/axios'
 import { useRoute } from 'vue-router'
 import GoBack from '@/components/GoBackRoute.vue'
+import TitleComponent from '@/components/TitleComponent.vue'
 
 export default {
   components: {
-    GoBack
+    GoBack,
+    TitleComponent
   },
   setup() {
     // Define a reactive property to hold the username

@@ -1,17 +1,20 @@
 <template>
   <GoHome />
-  <font-awesome-icon class="mb-3" icon="fa fa-user" size="2xl" />
+  <font-awesome-icon class="mb-3" icon="fa-solid fa-user-secret" size="2xl" />
   <div class="d-flex flex-column justify-content-center">
-    <h1 class="text-center green">Admin</h1>
+    <TitleComponent>Admin</TitleComponent>
     <p class="text-center">Bienvenido Admin ¿Que desea hacer?</p>
   </div>
 
   <div class="container w-100 row">
     <div class="col-6 mt-4 mb-4">
-      <button type="submit" class="w-100 btn btn-success">Consulta Usuario</button>
+      <router-link to="search">
+        <button type="submit" class="w-100 btn btn-success">Consulta Usuario</button>
+      </router-link>
     </div>
     <div class="col-6 mt-4 mb-4">
-      <button type="submit" class="w-100 btn btn-success">Validar Peticiones</button>
+      <router-link to="validate"><button type="submit" class="w-100 btn btn-success">Validar Peticiones</button>
+      </router-link>
     </div>
   </div>
 </template>
@@ -25,10 +28,12 @@ import { ref, onMounted } from 'vue'
 import axiosInstance from '@/axios'
 import { useRoute } from 'vue-router'
 import GoHome from '@/components/GoHomeRoute.vue'
+import TitleComponent from '@/components/TitleComponent.vue'
 
 export default {
   components: {
-    GoHome
+    GoHome,
+    TitleComponent
   },
   setup() {
     // Define a reactive property to hold the username

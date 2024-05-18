@@ -1,13 +1,14 @@
 <template>
     <div class="d-flex flex-column justify-content-center">
-        <TitleComponent>Cart</TitleComponent>
+        <TitleComponent>Consultar Usuario</TitleComponent>
 
+
+        <GoBack />
     </div>
-    <GoBack />
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axiosInstance from '@/axios'
 import { useRoute } from 'vue-router'
 import GoBack from '@/components/GoBackRoute.vue'
@@ -20,6 +21,7 @@ export default {
     },
     setup() {
         // Define a reactive property to hold the username
+        const userProfile = ref({})
         const username = ref('User Menu Page')
         const name = ref('First name')
         const route = useRoute()
@@ -30,8 +32,13 @@ export default {
                 console.log('userId here: ', userId)
                 const response = await axiosInstance.get(`/user/profile/${userId}`)
                 if (response.status === 200) {
-                    console.log(response)
-                    // Assuming the response contains the user's username
+                    console.log('API Response:', response.data)
+
+                    const { message, ...profileData } = response.data
+
+                    console.log(profileData)
+                    userProfile.value = profileData
+
                     username.value = response.data.username
                     name.value = response.data.name
                 }
@@ -43,7 +50,16 @@ export default {
         return {
             username,
             name,
+            userProfile,
         }
     }
 }
 </script>
+
+<style scoped>
+.my-hr {
+    border: none;
+    height: 3px;
+    background-color: #000;
+}
+</style>

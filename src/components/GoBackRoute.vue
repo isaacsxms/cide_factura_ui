@@ -9,6 +9,7 @@ export default {
     setup() {
         const router = useRouter()
         const goBack = () => {
+            localStorage.clear()
             router.back()
         }
 

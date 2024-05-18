@@ -1,8 +1,26 @@
 <template>
     <div class="d-flex flex-column justify-content-center">
-        <h1 class="text-center green">Factura</h1>
-
-
+        <TitleComponent class="mb-4">Invoices</TitleComponent>
+        <div class="container">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Fecha de compra</th>
+                        <th scope="col">Visualizar</th>
+                        <!-- Add more columns as needed -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(invoice, index) in invoices" :key="invoice._id">
+                        <th scope="row">{{ index + 1 }}</th>
+                        <td>{{ invoice.purchaseDate }}</td>
+                        <td><font-awesome-icon icon="fa-solid fa-magnifying-glass" /></td>
+                        <!-- Add more columns as needed -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <GoBack />
 </template>
@@ -10,38 +28,35 @@
 <script>
 import { ref, onMounted } from 'vue'
 import axiosInstance from '@/axios'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import GoBack from '@/components/GoBackRoute.vue'
+import TitleComponent from '@/components/TitleComponent.vue'
 
 export default {
     components: {
-        GoBack
+        GoBack,
+        TitleComponent
     },
     setup() {
-        // Define a reactive property to hold the username
-        const username = ref('User Menu Page')
-        const name = ref('First name')
-        const route = useRoute()
+        const invoices = ref([]);
+        const router = useRouter();
+        const route = useRoute();
+        const userId = route.params.id;
 
         onMounted(async () => {
             try {
-                const userId = route.params.id
-                console.log('userId here: ', userId)
-                const response = await axiosInstance.get(`/user/profile/${userId}`)
+                const response = await axiosInstance.get(`/user/invoices/${userId}`);
                 if (response.status === 200) {
-                    console.log(response)
-                    // Assuming the response contains the user's username
-                    username.value = response.data.username
-                    name.value = response.data.name
+                    console.log(response);
+                    invoices.value = response.data;
                 }
             } catch (error) {
-                console.error('Error fetching user profile:', error)
+                console.error('Error fetching invoices:', error);
             }
-        })
+        });
 
         return {
-            username,
-            name,
+            invoices,
         }
     }
 }

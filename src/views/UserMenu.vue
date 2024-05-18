@@ -3,12 +3,12 @@
 
   <font-awesome-icon class="mb-3" icon="fa fa-user" size="2xl" />
   <div class="d-flex flex-column justify-content-center">
-    <h1 class="text-center green">{{ username }}</h1>
+
+    <TitleComponent>{{ username }}</TitleComponent>
     <p class="text-center">
       Bienvenido <b>{{ name }}</b>, este es el panel de control de usuario de CIDE ¿Que desea hacer?
     </p>
   </div>
-
   <div class="container w-100 row">
     <div class="col-6 mt-4 mb-4">
       <router-link :to="userId + '/store'">
@@ -18,13 +18,6 @@
     <div class="col-6 mt-4 mb-4">
       <router-link :to="userId + '/profile'">
         <button type="submit" class="w-100 btn btn-success">Perfil</button>
-      </router-link>
-    </div>
-    <div class="col-6 mb-2">
-      <router-link :to="userId + '/cart'">
-        <button type="submit" class="w-100 btn btn-success">
-          <font-awesome-icon :icon="['fas', 'cart-shopping']" />
-        </button>
       </router-link>
     </div>
     <div class="col-6 mb-2">
@@ -44,11 +37,12 @@ import { ref, onMounted } from 'vue'
 import axiosInstance from '@/axios'
 import { useRoute } from 'vue-router'
 import GoHome from '@/components/GoHomeRoute.vue'
-
+import TitleComponent from '@/components/TitleComponent.vue'
 
 export default {
   components: {
-    GoHome
+    GoHome,
+    TitleComponent
   },
   setup() {
     // Define a reactive property to hold the username
@@ -80,11 +74,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.green {
-  color: rgb(21, 133, 21);
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  text-shadow: 1px 1px rgb(0, 0, 0);
-}
-</style>
+<style scoped></style>

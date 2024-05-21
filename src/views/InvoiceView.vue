@@ -1,4 +1,5 @@
 <template>
+    <UserLogged/>
     <div class="d-flex flex-column justify-content-center">
         <TitleComponent class="mb-4">Invoices</TitleComponent>
         <div class="container">
@@ -31,11 +32,13 @@ import axiosInstance from '@/axios'
 import { useRoute, useRouter } from 'vue-router'
 import GoBack from '@/components/GoBackRoute.vue'
 import TitleComponent from '@/components/TitleComponent.vue'
+import UserLogged from '@/components/UserLogged.vue'
 
 export default {
     components: {
         GoBack,
-        TitleComponent
+        TitleComponent,
+        UserLogged
     },
     setup() {
         const invoices = ref([]);

@@ -1,4 +1,5 @@
 <template>
+    <UserLogged/>
     <TitleComponent class="mb-4">Tienda</TitleComponent>
     <div class="d-flex justify-content-center w-100">
         <div class="w-50">
@@ -40,10 +41,13 @@ import axiosInstance from '@/axios'
 import { useRoute, useRouter } from 'vue-router'
 import GoBack from '@/components/GoBackRoute.vue'
 import TitleComponent from '@/components/TitleComponent.vue'
+import UserLogged from '@/components/UserLogged.vue'
+
 export default {
     components: {
         GoBack,
-        TitleComponent
+        TitleComponent,
+        UserLogged
     },
     setup() {
         // Define a reactive property to hold the username

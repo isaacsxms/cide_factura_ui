@@ -1,14 +1,16 @@
 <template>
     <div class="d-flex flex-column justify-content-center">
         <TitleComponent>Consultar Usuario</TitleComponent>
-
-
+        <input class="form-control me-2" type="search" placeholder="Busca usuario" aria-label="Search" v-model="search">
+        <ul>
+            <li v-for="user in filteredUsers" :key="user.id">{{ user.username }}</li>
+        </ul>
         <GoBack />
     </div>
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, reactive, watch } from 'vue'
 import axiosInstance from '@/axios'
 import { useRoute } from 'vue-router'
 import GoBack from '@/components/GoBackRoute.vue'
@@ -25,32 +27,37 @@ export default {
         const username = ref('User Menu Page')
         const name = ref('First name')
         const route = useRoute()
+        const search = ref("")
+        const users = ref([])
 
         onMounted(async () => {
             try {
-                const userId = route.params.id
-                console.log('userId here: ', userId)
-                const response = await axiosInstance.get(`/user/profile/${userId}`)
+                const response = await axiosInstance.get(`/users/search`);
+                console.log(response)
                 if (response.status === 200) {
-                    console.log('API Response:', response.data)
-
-                    const { message, ...profileData } = response.data
-
-                    console.log(profileData)
-                    userProfile.value = profileData
-
-                    username.value = response.data.username
-                    name.value = response.data.name
+                    users.value = response
                 }
             } catch (error) {
-                console.error('Error fetching user profile:', error)
+                console.error('Error fetching invoices:', error);
             }
-        })
+        });
+
+        const filteredUsers = computed(() => {
+            if (!search.value) return users.value;
+            return users.value.filter((user) =>
+                user.username.toLowerCase().includes(search.value.toLowerCase())
+            );
+        });
+
+
+        //const searchUser = computed()
 
         return {
             username,
             name,
             userProfile,
+            search,
+            filteredUsers
         }
     }
 }

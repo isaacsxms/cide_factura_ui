@@ -1,5 +1,5 @@
 <template>
-    <UserLogged/>
+    <UserLogged />
     <TitleComponent class="mb-4">Tienda</TitleComponent>
     <div class="d-flex justify-content-center w-100">
         <div class="w-50">
@@ -75,13 +75,16 @@ export default {
         const menjadorPrice = 10;
         const matineraPrice = 5;
 
+        const nonQuantityItems = 1;
         const menjadorQuantity = ref(0);
         const matineraQuantity = ref(0);
 
         const articles = reactive([
-            { id: 'camiseta', name: 'Camiseta', price: 25, selected: false },
-            { id: 'calzones', name: 'Calzones', price: 25, selected: false },
-            { id: 'uniforme', name: 'Uniforme', price: 25, selected: false }
+            { id: 'menjador', name: 'Menjador', price: menjadorPrice, quantity: menjadorQuantity },
+            { id: 'matinera', name: 'Matinera', price: matineraPrice, quantity: matineraQuantity },
+            { id: 'camiseta', name: 'Camiseta', price: 25, selected: false, quantity: nonQuantityItems },
+            { id: 'calzones', name: 'Calzones', price: 25, selected: false, quantity: nonQuantityItems },
+            { id: 'uniforme', name: 'Uniforme', price: 25, selected: false, quantity: nonQuantityItems }
         ]);
 
         const extracurriculars = reactive([
@@ -105,8 +108,6 @@ export default {
 
         const submitPurchase = async () => {
             const selectedItems = {
-                menjadorQuantity: menjadorQuantity.value,
-                matineraQuantity: matineraQuantity.value,
                 articles: articles.filter(item => item.selected),
                 extracurriculars: extracurriculars.filter(item => item.selected),
                 total: total.value

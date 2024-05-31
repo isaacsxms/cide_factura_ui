@@ -1,7 +1,7 @@
 <template>
-    <UserLogged/>
+    <UserLogged />
     <div class="d-flex flex-column justify-content-center">
-        <TitleComponent class="mb-4">Invoices</TitleComponent>
+        <TitleComponent class="mb-4">Facturas</TitleComponent>
         <div class="container">
             <table class="table">
                 <thead class="thead-dark">
@@ -16,7 +16,9 @@
                     <tr v-for="(invoice, index) in invoices" :key="invoice._id">
                         <th scope="row">{{ index + 1 }}</th>
                         <td>{{ invoice.purchaseDate }}</td>
-                        <td><font-awesome-icon icon="fa-solid fa-magnifying-glass" /></td>
+                        <td><font-awesome-icon style="cursor: pointer;" @click="goInvoice(invoice._id)"
+                                icon="fa-solid fa-magnifying-glass" />
+                        </td>
                         <!-- Add more columns as needed -->
                     </tr>
                 </tbody>
@@ -58,8 +60,14 @@ export default {
             }
         });
 
+
+        const goInvoice = (invoiceId) => {
+            router.push(`/invoice/${invoiceId}`)
+        }
+
         return {
             invoices,
+            goInvoice
         }
     }
 }

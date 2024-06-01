@@ -63,6 +63,11 @@ const router = createRouter({
       path: '/invoice/:id',
       name: 'printedinvoicefile',
       component: () => import('../views/PrintedInvoiceFile.vue')
+    },
+    {
+      path: '/admin/check/user/:id',
+      name: 'checkuser',
+      component: () => import('../views/UserInfo.vue')
     }
   ]
 })

@@ -2,17 +2,20 @@
     <div class="d-flex flex-column justify-content-center">
         <TitleComponent>Consultar Usuario</TitleComponent>
         <input class="form-control me-2" type="search" placeholder="Busca usuario" aria-label="Search" v-model="search">
-        <ul>
-            <li v-for="user in filteredUsers" :key="user.id">{{ user.username }}</li>
+        <ul class="list-group mt-3">
+            <li class="list-group-item" v-for="user in filteredUsers" :key="user._id" @click="showUserInfo(user._id)">
+                {{ user.username }}
+            </li>
         </ul>
         <GoBack />
     </div>
 </template>
 
+
 <script>
-import { ref, onMounted, computed, reactive, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axiosInstance from '@/axios'
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import GoBack from '@/components/GoBackRoute.vue'
 import TitleComponent from '@/components/TitleComponent.vue'
 
@@ -22,23 +25,19 @@ export default {
         TitleComponent
     },
     setup() {
-        // Define a reactive property to hold the username
-        const userProfile = ref({})
-        const username = ref('User Menu Page')
-        const name = ref('First name')
-        const route = useRoute()
         const search = ref("")
         const users = ref([])
+        const router = useRouter()
 
         onMounted(async () => {
             try {
-                const response = await axiosInstance.get(`/users/search`);
+                const response = await axiosInstance.get(`/users`);
                 console.log(response)
                 if (response.status === 200) {
-                    users.value = response
+                    users.value = response.data
                 }
             } catch (error) {
-                console.error('Error fetching invoices:', error);
+                console.error('Error fetching users:', error);
             }
         });
 
@@ -49,24 +48,33 @@ export default {
             );
         });
 
-
-        //const searchUser = computed()
+        const showUserInfo = (userId) => {
+            router.push(`/admin/check/user/${userId}`)
+        }
 
         return {
-            username,
-            name,
-            userProfile,
             search,
-            filteredUsers
+            filteredUsers,
+            showUserInfo
         }
     }
 }
 </script>
+
 
 <style scoped>
 .my-hr {
     border: none;
     height: 3px;
     background-color: #000;
+}
+
+.list-group-item {
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.list-group-item:hover {
+    background-color: #f0f0f0;
 }
 </style>

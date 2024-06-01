@@ -8,7 +8,6 @@
       <div class="col-md-4 mb-2">
         <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.username?.$error }"
           id="username" v-model="state.username" placeholder="Nombre de usuario" />
-        <!-- Add other fields here -->
       </div>
       <div class="col-md-4 mb-2">
         <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.name?.$error }"
@@ -28,7 +27,7 @@
           id="address" v-model="state.address" placeholder="Dirección" />
       </div>
       <div class="col-md-4 mb-2">
-        <input type="text" class="form-control rounded-3 form-style"
+        <input type="date" class="form-control rounded-3 form-style"
           :class="{ 'border-danger': v$?.date_of_birth?.$error }" id="date_of_birth" v-model="state.date_of_birth"
           placeholder="Fecha de nacimiento" />
       </div>
@@ -36,24 +35,22 @@
         <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.identity?.$error }"
           id="identity" v-model="state.identity" placeholder="Número de identidad (DNI o NIE)" />
       </div>
-      <div class="col-md-4 mb-2">
-        <!-- add v-if = " user must be under 18 "-->
+      <div class="col-md-4 mb-2" v-if="isUnder18">
         <input type="text" class="form-control rounded-3 form-style"
           :class="{ 'border-danger': v$?.tutor_name?.$error }" id="tutor_name" v-model="state.tutor_name"
           placeholder="Tutor legal: Nombre" />
       </div>
-      <div class="col-md-4 mb-2">
-        <!-- add v-if = " user must be under 18 "-->
+      <div class="col-md-4 mb-2" v-if="isUnder18">
         <input type="text" class="form-control rounded-3 form-style"
           :class="{ 'border-danger': v$?.tutor_identity?.$error }" id="tutor_identity" v-model="state.tutor_identity"
           placeholder="Tutor legal: DNI o NIE" />
       </div>
       <div class="col-md-4 mb-2">
-        <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.telephone?.$error }"
+        <input type="tel" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.telephone?.$error }"
           id="telephone" v-model="state.telephone" placeholder="Teléfono" />
       </div>
       <div class="col-md-4 mb-2">
-        <input type="text" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.email?.$error }"
+        <input type="email" class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.email?.$error }"
           id="email" v-model="state.email" placeholder="E-mail" />
       </div>
       <div class="col-md-4 mb-2">
@@ -89,14 +86,10 @@
 import { ref, reactive, computed } from 'vue'
 import axiosInstance from '@/axios'
 import useVuelidate from '@vuelidate/core'
-import { required, sameAs } from '@vuelidate/validators'
+import { required, email, sameAs, requiredIf, helpers, minLength, maxLength } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
 import GoBack from '@/components/GoBackRoute.vue'
-/*
-  For username and password on login, it'll only need to check if the
-  input exists in DB, can also check for other things, but thats the only
-  thing really needed, and that it's not empty, meaning required
-  */
+
 export default {
   components: {
     GoBack
@@ -120,21 +113,64 @@ export default {
       enrolling_in: ''
     })
 
-    // TO-DO: Finish adding rules to fields
+    const isUnder18 = computed(() => {
+      const today = new Date()
+      const birthDate = new Date(state.date_of_birth)
+      const age = today.getFullYear() - birthDate.getFullYear()
+      const m = today.getMonth() - birthDate.getMonth()
+      return m < 0 || (m === 0 && today.getDate() < birthDate.getDate()) ? age - 1 : age < 18
+    })
+
+    const phoneValidator = helpers.withMessage(
+      'Invalid phone number. It should be 10 digits long.',
+      value => /^\d{9}$/.test(value)
+    )
+
+    const nameValidator = helpers.withMessage(
+      'Name must contain only letters.',
+      value => /^[a-zA-Z]+$/.test(value)
+    )
+
     const rules = {
-      username: { required },
+      username: {
+        required,
+        minLength: minLength(3),
+        maxLength: maxLength(15)
+      },
       password: { required },
-      confirm_password: { required, sameAsPassword: sameAs(computed(() => state.password)) },
-      name: { required },
-      surname: { required },
-      second_surname: '',
+      confirm_password: {
+        required,
+        sameAsPassword: sameAs(computed(() => state.password))
+      },
+      name: {
+        required,
+        maxLength: maxLength(20),
+        nameValidator
+      },
+      surname: {
+        required,
+        maxLength: maxLength(20),
+        nameValidator
+      },
+      second_surname: {
+        maxLength: maxLength(20),
+      },
       address: { required },
       date_of_birth: { required },
-      identity: { required },
-      tutor_name: '',
-      tutor_identity: '',
-      telephone: { required },
-      email: { required },
+      identity: {
+        required,
+        regex: helpers.regex(/^((\d{8}[A-Z])|([XYZ]\d{7}[A-Z]))$/i) // regex for dni - nie
+      },
+      tutor_name: { required: isUnder18 },
+      tutor_identity: { required: isUnder18 },
+      telephone: {
+        required,
+        phoneValidator
+      },
+      email: {
+        required,
+        email
+      },
       iban: { required },
       enrolling_in: { required }
     }
@@ -168,7 +204,7 @@ export default {
             console.log('User registered successfully')
             router.push('/')
           } else {
-            console.log('Register failed:', response.data) // log doesn't appear for some reason
+            console.log('Register failed:', response.data)
           }
         } else {
           console.error('Error on input inserted...')
@@ -196,6 +232,7 @@ export default {
       state,
       submitForm,
       v$,
+      isUnder18,
       showPassword,
       togglePasswordVisibility,
       updatePasswordVisibility,

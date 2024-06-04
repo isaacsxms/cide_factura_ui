@@ -68,10 +68,23 @@
           id="iban" v-model="state.iban" placeholder="IBAN" />
       </div>
       <div class="col-md-4 mb-2">
-        <input type="text" class="form-control rounded-3 form-style"
-          :class="{ 'border-danger': v$?.enrolling_in?.$error }" id="enrolling_in" v-model="state.enrolling_in"
-          placeholder="Curso academico" />
+        <select class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.enrolling_in?.$error }"
+          id="enrolling_in" v-model="state.enrolling_in">
+          <option value="" disabled selected>Curso academico</option>
+          <option v-for="course in courses" :key="course" :value="course">{{ course }}</option>
+        </select>
       </div>
+      <div class="col-md-4 mb-2">
+        <select class="form-control rounded-3 form-style" :class="{ 'border-danger': v$?.large_family?.$error }"
+          id="large_family" v-model="state.large_family">
+          <option value="" disabled selected>Familia numerosa</option>
+          <option value="si">Sí</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mt-2">
+      <p class="fw-bold">Seguro anual: 23€</p>
     </div>
     <div class="d-flex justify-content-center mt-2">
       <button type="submit" class="w-50 btn btn-success ml-auto mr-auto mb-2" @click="submitForm">
@@ -86,7 +99,7 @@
 import { ref, reactive, computed } from 'vue'
 import axiosInstance from '@/axios'
 import useVuelidate from '@vuelidate/core'
-import { required, email, sameAs, requiredIf, helpers, minLength, maxLength } from '@vuelidate/validators'
+import { required, email, sameAs, helpers, minLength, maxLength } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
 import GoBack from '@/components/GoBackRoute.vue'
 
@@ -110,8 +123,18 @@ export default {
       telephone: '',
       email: '',
       iban: '',
-      enrolling_in: ''
+      enrolling_in: '',
+      large_family: '',
     })
+
+
+    const courses = ref([
+      'FPGS DAM',
+      'FPGS Administración',
+      'FPGS DAW',
+      'CFGM Administración',
+      'CFGM Electricidad',
+    ])
 
     const isUnder18 = computed(() => {
       const today = new Date()
@@ -129,6 +152,11 @@ export default {
     const nameValidator = helpers.withMessage(
       'Name must contain only letters.',
       value => /^[a-zA-Z]+$/.test(value)
+    )
+
+    const ibanValidator = helpers.withMessage(
+      'Invalid IBAN format.',
+      value => /^[A-Z]{2}[0-9A-Z]{13,31}$/.test(value)
     )
 
     const rules = {
@@ -161,8 +189,14 @@ export default {
         required,
         regex: helpers.regex(/^((\d{8}[A-Z])|([XYZ]\d{7}[A-Z]))$/i) // regex for dni - nie
       },
-      tutor_name: { required: isUnder18 },
-      tutor_identity: { required: isUnder18 },
+      tutor_name: {
+        required: isUnder18,
+        maxLength: maxLength(20),
+      },
+      tutor_identity: {
+        required: isUnder18,
+        regex: helpers.regex(/^((\d{8}[A-Z])|([XYZ]\d{7}[A-Z]))$/i) // regex for dni - nie
+      },
       telephone: {
         required,
         phoneValidator
@@ -171,8 +205,12 @@ export default {
         required,
         email
       },
-      iban: { required },
-      enrolling_in: { required }
+      iban: {
+        required,
+        ibanValidator
+      },
+      enrolling_in: { required },
+      large_family: { required }
     }
 
     const router = useRouter()
@@ -198,11 +236,31 @@ export default {
             telephone: state.telephone,
             email: state.email,
             iban: state.iban,
-            enrolling_in: state.enrolling_in
+            enrolling_in: state.enrolling_in,
+            large_family: state.large_family
           })
           if (response.status === 201) {
             console.log('User registered successfully')
-            router.push('/')
+            const userId = response.data.userId // Assuming the response contains the user ID
+
+            // Second POST request to insert the insurance fee
+            const insuranceResponse = await axiosInstance.post(`user/${userId}/purchase`, {
+              articles: [
+                {
+                  id: 'seguro',
+                  name: 'Seguro anual',
+                  price: 23,
+                  quantity: 1
+                }
+              ],
+              total: 23
+            })
+            if (insuranceResponse.status === 201) {
+              console.log('Insurance fee registered successfully')
+              router.push('/')
+            } else {
+              console.log('Failed to register insurance fee:', insuranceResponse.data)
+            }
           } else {
             console.log('Register failed:', response.data)
           }
@@ -230,6 +288,7 @@ export default {
 
     return {
       state,
+      courses,
       submitForm,
       v$,
       isUnder18,

@@ -6,11 +6,11 @@
             <h3>Artículos:</h3>
             <div class="form-group">
                 <input type="number" class=" spinner" id="menjador" v-model.number="menjadorQuantity" min="0" max="5" />
-                <label for="menjador">Menjador - <b>8.5€ la unidad</b></label>
+                <label for="menjador">Menjador - <b>{{ menjadorPrice }}€ la unidad</b></label>
             </div>
             <div class="form-group">
                 <input type="number" class="spinner" id="matinera" v-model.number="matineraQuantity" min="0" max="5" />
-                <label for="matinera">Matinera - <b>8.5€ la unidad</b></label>
+                <label for="matinera">Matinera - <b>{{ matineraPrice }}€ la unidad</b></label>
             </div>
             <div class="form-check" v-for="item in articles" :key="item.id">
                 <input class="form-check-input" type="checkbox" :id="item.id" v-model="item.selected">
@@ -34,7 +34,6 @@
     <GoBack />
 </template>
 
-
 <script>
 import { ref, onMounted, reactive, computed } from 'vue'
 import axiosInstance from '@/axios'
@@ -50,82 +49,78 @@ export default {
         UserLogged
     },
     setup() {
-        // Define a reactive property to hold the username
         const username = ref('User Menu Page')
         const name = ref('First name')
         const route = useRoute()
         const router = useRouter()
         const userId = route.params.id
+        const largeFamily = ref(false)
 
         onMounted(async () => {
             try {
-                console.log('userId here: ', userId)
                 const response = await axiosInstance.get(`/user/profile/${userId}`)
                 if (response.status === 200) {
-                    console.log(response)
-                    // Assuming the response contains the user's username
                     username.value = response.data.username
                     name.value = response.data.name
+                    largeFamily.value = response.data.familia_nombrosa === 'si'
                 }
             } catch (error) {
                 console.error('Error fetching user profile:', error)
             }
         })
 
-        const menjadorPrice = 10;
-        const matineraPrice = 5;
+        const originalMenjadorPrice = 8.5
+        const originalMatineraPrice = 8.5
 
-        const nonQuantityItems = 1;
-        const menjadorQuantity = ref(0);
-        const matineraQuantity = ref(0);
+        const menjadorPrice = computed(() => largeFamily.value ? (originalMenjadorPrice * 0.8).toFixed(2) : originalMenjadorPrice.toFixed(2))
+        const matineraPrice = computed(() => largeFamily.value ? (originalMatineraPrice * 0.8).toFixed(2) : originalMatineraPrice.toFixed(2))
+
+        const menjadorQuantity = ref(0)
+        const matineraQuantity = ref(0)
 
         const articles = reactive([
-            { id: 'menjador', name: 'Menjador', price: menjadorPrice, quantity: menjadorQuantity },
-            { id: 'matinera', name: 'Matinera', price: matineraPrice, quantity: matineraQuantity },
-            { id: 'camiseta', name: 'Camiseta', price: 25, selected: false, quantity: nonQuantityItems },
-            { id: 'calzones', name: 'Calzones', price: 25, selected: false, quantity: nonQuantityItems },
-            { id: 'uniforme', name: 'Uniforme', price: 25, selected: false, quantity: nonQuantityItems }
-        ]);
+            { id: 'camiseta', name: 'Camiseta', price: 20, selected: false },
+            { id: 'calzones', name: 'Calzones', price: 25, selected: false },
+            { id: 'chaqueta', name: 'Chaqueta', price: 25, selected: false },
+            { id: 'baberall', name: 'Baberall', price: 15, selected: false }
+        ])
 
         const extracurriculars = reactive([
-            { id: 'master-xef', name: 'Master Xef', price: 15, selected: false },
-            { id: 'arduino', name: 'Arduino', price: 12, selected: false },
-            { id: 'gimnasia', name: 'Gimnàsia', price: 10, selected: false },
-            { id: 'futbol', name: 'Futbol', price: 10, selected: false },
-            { id: 'basquet', name: 'Basquet', price: 10, selected: false },
-            { id: 'robotica', name: 'Robotica', price: 18, selected: false }
-        ]);
+            { id: 'master-xef', name: 'Master Xef', price: largeFamily.value ? 20 : 25, selected: false },
+            { id: 'arduino', name: 'Arduino', price: largeFamily.value ? 20 : 25, selected: false },
+            { id: 'gimnasia', name: 'Gimnàsia', price: largeFamily.value ? 20 : 25, selected: false },
+            { id: 'futbol', name: 'Futbol', price: largeFamily.value ? 20 : 25, selected: false },
+            { id: 'basquet', name: 'Basquet', price: largeFamily.value ? 20 : 25, selected: false },
+            { id: 'robotica', name: 'Robotica', price: largeFamily.value ? 20 : 25, selected: false }
+        ])
 
         const total = computed(() => {
-            const articleTotal = articles.filter(item => item.selected).reduce((sum, item) => sum + item.price, 0);
-            const extracurricularTotal = extracurriculars.filter(item => item.selected).reduce((sum, item) => sum + item.price, 0);
-            const menjadorTotal = menjadorQuantity.value * menjadorPrice;
-            const matineraTotal = matineraQuantity.value * matineraPrice;
+            const articleTotal = articles.filter(item => item.selected).reduce((sum, item) => sum + item.price, 0)
+            const extracurricularTotal = extracurriculars.filter(item => item.selected).reduce((sum, item) => sum + item.price, 0)
+            const menjadorTotal = menjadorQuantity.value * menjadorPrice.value
+            const matineraTotal = matineraQuantity.value * matineraPrice.value
 
-            return articleTotal + extracurricularTotal + menjadorTotal + matineraTotal;
-        });
-
+            return (articleTotal + extracurricularTotal + menjadorTotal + matineraTotal).toFixed(2)
+        })
 
         const submitPurchase = async () => {
             const selectedItems = {
                 articles: articles.filter(item => item.selected),
                 extracurriculars: extracurriculars.filter(item => item.selected),
                 total: total.value
-            };
+            }
 
             try {
-                const response = await axiosInstance.post(`user/${userId}/purchase`, selectedItems);
-                console.log(response.status)
+                const response = await axiosInstance.post(`user/${userId}/purchase`, selectedItems)
                 if (response.status === 201) {
-                    console.log("Purchase submitted successfully");
-                    router.back();
+                    router.back()
                 } else {
-                    console.error("Error submitting purchase");
+                    console.error("Error submitting purchase")
                 }
             } catch (error) {
-                console.error('Error submitting purchase:', error);
+                console.error('Error submitting purchase:', error)
             }
-        };
+        }
 
         return {
             username,
@@ -134,6 +129,8 @@ export default {
             matineraQuantity,
             articles,
             extracurriculars,
+            menjadorPrice,
+            matineraPrice,
             total,
             submitPurchase
         }
